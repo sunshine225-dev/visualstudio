@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development tsx server/index.ts",
     "prebuild": "npm install",
-    "build": "npx esbuild server/**/*.ts --platform=node --format=esm --outdir=dist --packages=external --tsconfig=tsconfig.json",
+    "build": "npx esbuild server/**/*.ts shared/**/*.ts --platform=node --format=esm --outdir=dist --packages=external --tsconfig=tsconfig.json",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "check": "tsc",
     "db:push": "drizzle-kit push"
