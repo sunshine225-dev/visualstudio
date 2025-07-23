@@ -5,10 +5,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Fonction de log universelle
-const log = (message: string) => {
-  console.log(`[${new Date().toISOString()}] ${message}`);
-};
+// Import conditionnel de la fonction log et serveStatic
+let log: (message: string) => void;
+let serveStatic: ((app: express.Application) => void) | undefined;
+
+if (process.env.NODE_ENV === "development") {
+  // En développement, utiliser vite.js
+  const viteModule = await import("./vite.js");
+  log = viteModule.log;
+} else {
+  // En production, utiliser vite-production.js
+  const viteProductionModule = await import("./vite-production.js");
+  log = viteProductionModule.log;
+  serveStatic = viteProductionModule.serveStatic;
+}
 
 // Middleware de log pour les requêtes /api
 app.use((req, res, next) => {
@@ -50,28 +60,13 @@ app.use((req, res, next) => {
   });
 
   if (process.env.NODE_ENV === "development") {
-    try {
-      const { setupVite } = await import("./vite.js");
-      await setupVite(app, server);
-    } catch (error) {
-      console.error("Failed to setup Vite:", error);
-      process.exit(1);
-    }
+    const { setupVite } = await import("./vite.js");
+    await setupVite(app, server);
   } else {
-    // En production, servir les fichiers statiques manuellement
-    const path = await import("path");
-    const { fileURLToPath } = await import("url");
-    
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    
-    // Servir les fichiers statiques
-    app.use(express.static(path.join(__dirname, "../public")));
-    
-    // Catch-all pour SPA
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../public/index.html"));
-    });
+    // En production, utiliser serveStatic
+    if (serveStatic) {
+      serveStatic(app);
+    }
   }
 
   const port = parseInt(process.env.PORT || "5000", 10);
