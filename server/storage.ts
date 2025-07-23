@@ -5,7 +5,7 @@ import {
   type InsertUser,
   type ContactSubmission,
   type InsertContactSubmission
-} from "@shared/schema";
+} from "../shared/schema.js";
 import { db } from "./db.js";
 import { eq, desc } from "drizzle-orm";
 
