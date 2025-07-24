@@ -23,8 +23,7 @@
   --destructive-foreground: hsl(0, 0%, 98%);
   --ring: hsl(240, 4.9%, 83.9%);
   --radius: 0.75rem;
-  
-  /* Premium studio theme colors */
+
   --premium-gold: hsl(45, 100%, 70%);
   --premium-gold-dark: hsl(45, 100%, 60%);
   --premium-blue: hsl(220, 100%, 60%);
@@ -61,7 +60,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--border);
   }
 
   body {
@@ -74,6 +73,9 @@
     text-rendering: optimizeLegibility;
   }
 }
+
+/* (pas modifiés) les sections components et utilities suivent ici */
+
 
 @layer components {
   .glass-effect {
