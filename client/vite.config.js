@@ -8,7 +8,7 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: '../dist/public',
+    outDir: resolve(__dirname, '../dist/public'), //  IMPORTANT
     emptyOutDir: true
   }
 })
