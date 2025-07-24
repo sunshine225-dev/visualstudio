@@ -1,21 +1,178 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <title>VisualStudio360 - Explorez l'architecture autrement</title>
-    <meta name="description" content="Studio de visualisation 3D et d'aménagement d'intérieur. Rendus photo-réalistes, animations 3D, visites interactives et réalisation complète de projets d'intérieur sur mesure.">
-    <meta property="og:title" content="VisualStudio360 - Explorez l'architecture autrement">
-    <meta property="og:description" content="Studio de visualisation 3D et d'aménagement d'intérieur. Rendus photo-réalistes, animations 3D, visites interactives et réalisation complète de projets d'intérieur sur mesure.">
-    <meta property="og:type" content="website">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VisualStudio360 - API Backend</title>
+    <meta name="description" content="API Backend pour VisualStudio360 - Studio de visualisation 3D et d'aménagement d'intérieur">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
-    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
-  </body>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .subtitle {
+            color: #94a3b8;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+        .api-info {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 15px;
+            margin: 2rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .api-info h3 {
+            color: #e2e8f0;
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        .endpoints {
+            display: grid;
+            gap: 1rem;
+        }
+        .endpoint {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .method {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+        .method.post { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .method.put { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .method.delete { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        .footer {
+            margin-top: 2rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #60a5fa;
+            animation: spin 1s ease-in-out infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">🏢</div>
+        <h1>VisualStudio360</h1>
+        <div class="subtitle">API Backend - Studio de visualisation 3D</div>
+        
+        <div class="status">
+            <span>●</span> Service en ligne
+        </div>
+        
+        <div class="api-info">
+            <h3>🔗 Endpoints disponibles</h3>
+            <div class="endpoints">
+                <div class="endpoint">
+                    <span><span class="method">GET</span> /api/health</span>
+                    <span id="health-status" class="loading"></span>
+                </div>
+                <div class="endpoint">
+                    <span><span class="method">GET</span> /api/projects</span>
+                    <span>📋 Liste des projets</span>
+                </div>
+                <div class="endpoint">
+                    <span><span class="method post">POST</span> /api/projects</span>
+                    <span>➕ Créer un projet</span>
+                </div>
+                <div class="endpoint">
+                    <span><span class="method">GET</span> /api/renders</span>
+                    <span>🎨 Rendus 3D</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>API REST pour la gestion des projets de visualisation 3D</p>
+        </div>
+        
+        <script>
+            // Test de l'API Health Check
+            fetch('/api/health')
+                .then(response => response.json())
+                .then(data => {
+                    const healthStatus = document.getElementById('health-status');
+                    healthStatus.innerHTML = '✅';
+                    healthStatus.className = '';
+                    console.log('✅ API Health Check:', data);
+                })
+                .catch(error => {
+                    const healthStatus = document.getElementById('health-status');
+                    healthStatus.innerHTML = '❌';
+                    healthStatus.className = '';
+                    console.error('❌ API Error:', error);
+                });
+        </script>
+    </div>
+</body>
 </html>
