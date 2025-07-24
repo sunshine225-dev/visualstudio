@@ -8,7 +8,8 @@ export default defineConfig({
     }
   },
   build: {
-    outDir: resolve(__dirname, '../dist/public'), //  IMPORTANT
+    outDir: resolve(__dirname, '../dist/public'), // chemin absolu
     emptyOutDir: true
   }
 })
+
